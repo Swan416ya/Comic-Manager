@@ -28,13 +28,17 @@ namespace Comic_Manager
     {
         private Window? _window;
 
+        // 【新增】定义一个全局静态属性，用来保存主窗口的引用
+        // 这样在 ShelfPage 里需要弹窗选文件时，就能通过 App.MainWindow 拿到窗口句柄了
+        public static Window MainWindow { get; set; }
+
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
         /// </summary>
         public App()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         /// <summary>
@@ -43,7 +47,11 @@ namespace Comic_Manager
         /// <param name="args">Details about the launch request and process.</param>
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
-            _window = new global::Comic_Manager.MainWindow();
+            _window = new MainWindow();
+
+            // 【新增】将创建出来的窗口赋值给全局静态变量
+            MainWindow = _window;
+
             _window.Activate();
         }
     }

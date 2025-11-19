@@ -49,36 +49,35 @@ namespace Comic_Manager
             // 沉浸式标题栏
             this.ExtendsContentIntoTitleBar = true;
             this.SetTitleBar(AppTitleBar);
+
+            // 确保 AppWindow 静态引用可用 (为了 ShelfPage 里的 FilePicker)
+            // 这是一种简单的 Hack，为了让 ShelfPage 能拿到 MainWindow 的句柄
+            App.MainWindow = this;
+
+            // 默认加载全部漫画页面
+            ContentFrame.Navigate(typeof(ShelfPage), "All");
         }
 
         private async void MainNav_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
         {
             var clickedItem = args.InvokedItemContainer as NavigationViewItem;
-
             if (clickedItem != null)
             {
                 string tag = clickedItem.Tag?.ToString();
 
-                if (tag == "AddCategory")
-                {
-                    await ShowAddCategoryDialog();
-                    // 保持设置页面或者之前的页面选中状态，不要让"添加分类"按钮变亮
-                    // (这一步逻辑比较复杂，暂时先不处理选中态的回滚)
-                }
-                else if (tag == "Settings")
-                {
-                    // 【新增】跳转到设置页面
-                    // typeof(SettingsPage) 告诉 Frame 去加载我们刚才写的那个文件
-                    ContentFrame.Navigate(typeof(SettingsPage));
-                }
+                if (tag == "AddCategory") { await ShowAddCategoryDialog(); }
+                else if (tag == "Settings") { ContentFrame.Navigate(typeof(SettingsPage)); }
                 else if (tag == "All")
                 {
-                    // 这里也可以改成 Navigate，但暂时保持原样
-                    ContentFrame.Content = new TextBlock() { Text = "全部漫画列表", FontSize = 24, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center };
+                    // 跳转到书架页面，参数是 "All"
+                    ContentFrame.Navigate(typeof(ShelfPage), "All");
                 }
                 else
                 {
-                    ContentFrame.Content = new TextBlock() { Text = $"分类: {clickedItem.Content}", FontSize = 24, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center };
+                    // 跳转到书架页面，参数是分类名
+                    // 注意：这里假设 content 就是分类名
+                    string categoryName = clickedItem.Content.ToString();
+                    ContentFrame.Navigate(typeof(ShelfPage), categoryName);
                 }
             }
         }
@@ -189,6 +188,10 @@ namespace Comic_Manager
             };
 
             MainNav.MenuItems.Add(newItem);
+            if (!AppRepository.AllCategories.Contains(name))
+            {
+                AppRepository.AllCategories.Add(name);
+            }
             MainNav.SelectedItem = newItem;
 
             // 刷新右侧
