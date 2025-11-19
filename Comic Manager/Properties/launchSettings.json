@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Comic Manager (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "Comic Manager (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
