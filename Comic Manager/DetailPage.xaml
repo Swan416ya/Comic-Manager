@@ -1,0 +1,92 @@
+<Page
+    x:Class="Comic_Manager.DetailPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="using:Comic_Manager"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid Padding="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- 顶部导航 -->
+            <RowDefinition Height="Auto"/>
+            <!-- 漫画信息区域 -->
+            <RowDefinition Height="*"/>
+            <!-- 章节列表区域 -->
+        </Grid.RowDefinitions>
+
+        <!-- 1. 顶部返回条 -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="16" Margin="0,0,0,24">
+            <Button Click="OnBackClick" Style="{StaticResource NavigationBackButtonNormalStyle}"/>
+            <TextBlock x:Name="HeaderTitle" Text="漫画详情" Style="{StaticResource TitleTextBlockStyle}" VerticalAlignment="Center"/>
+        </StackPanel>
+
+        <!-- 2. 漫画信息与操作区 -->
+        <Grid Grid.Row="1" Margin="0,0,0,24">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <!-- 图片 -->
+                <ColumnDefinition Width="*"/>
+                <!-- 文字和按钮 -->
+            </Grid.ColumnDefinitions>
+
+            <!-- 封面大图 -->
+            <Border CornerRadius="8" Width="150" Height="220" Margin="0,0,24,0" Shadow="{ThemeResource SharedShadow}" Translation="0,0,16">
+                <Image x:Name="DetailCoverImage" Source="{x:Null}" Stretch="UniformToFill"/>
+            </Border>
+
+            <!-- 右侧信息 -->
+            <StackPanel Grid.Column="1" VerticalAlignment="Bottom" Spacing="12">
+                <TextBlock x:Name="DetailTitle" Text="标题" Style="{StaticResource SubtitleTextBlockStyle}" FontSize="32"/>
+                <TextBlock x:Name="DetailAuthor" Text="作者" Style="{StaticResource BodyStrongTextBlockStyle}" Opacity="0.6"/>
+
+                <!-- 添加章节按钮 -->
+                <Button Click="OnAddChapterClick" 
+                        Style="{StaticResource AccentButtonStyle}" 
+                        Margin="0,12,0,0">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <FontIcon Glyph="&#xE710;" FontFamily="Segoe Fluent Icons"/>
+                        <TextBlock Text="添加章节"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Grid>
+
+        <!-- 3. 章节列表 -->
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="章节列表" Style="{StaticResource SubtitleTextBlockStyle}" Margin="0,0,0,12"/>
+
+            <GridView x:Name="ChaptersGridView" 
+                      Grid.Row="1"
+                      SelectionMode="None"
+                      IsItemClickEnabled="True"
+                      ItemClick="OnChapterItemClick">
+
+                <GridView.ItemTemplate>
+                    <DataTemplate x:DataType="local:ComicChapter">
+                        <!-- 章节按钮卡片 -->
+                        <Border Width="120" Height="50" 
+                                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                BorderThickness="1"
+                                CornerRadius="4"
+                                Padding="12">
+                            <TextBlock Text="{x:Bind DisplayTitle}" 
+                                       VerticalAlignment="Center" 
+                                       HorizontalAlignment="Center" 
+                                       FontWeight="SemiBold"/>
+                        </Border>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+            </GridView>
+        </Grid>
+    </Grid>
+</Page>

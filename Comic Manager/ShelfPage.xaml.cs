@@ -218,5 +218,13 @@ namespace Comic_Manager
             addToMenu.IsEnabled = addToMenu.Items.Count > 0;
             removeFromMenu.IsEnabled = removeFromMenu.Items.Count > 0;
         }
+        private void OnComicItemClick(object sender, ItemClickEventArgs e)
+        {
+            // 获取点击的漫画对象
+            if (e.ClickedItem is ComicSeries clickedComic)
+            {
+                this.Frame.Navigate(typeof(DetailPage), clickedComic);
+            }
+        }
     }
 }

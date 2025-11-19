@@ -1,7 +1,8 @@
-﻿using System;
+﻿using Microsoft.UI.Xaml.Media.Imaging; // 用于图片
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel; // 用于数据更新通知
-using Microsoft.UI.Xaml.Media.Imaging; // 用于图片
 
 namespace Comic_Manager
 {
@@ -55,5 +56,7 @@ namespace Comic_Manager
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string propertyName) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        public ObservableCollection<ComicChapter> Chapters { get; set; } = new ObservableCollection<ComicChapter>();
     }
 }

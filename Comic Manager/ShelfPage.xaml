@@ -10,10 +10,11 @@
     <!-- 背景透明以显示 Mica -->
 
     <Grid>
-        <!-- 1. 漫画网格列表 -->
         <GridView x:Name="ComicGridView" 
-                  Padding="20" 
-                  SelectionMode="Single">
+                    Padding="20" 
+                    SelectionMode="None"        
+                    IsItemClickEnabled="True"   
+                    ItemClick="OnComicItemClick">
 
             <!-- 【新增代码】在这里重写选中状态的颜色资源 -->
             <GridView.Resources>
