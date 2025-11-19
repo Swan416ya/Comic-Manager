@@ -52,6 +52,13 @@
                         <TextBlock Text="添加章节"/>
                     </StackPanel>
                 </Button>
+
+                <ComboBox x:Name="ModeComboBox" Header="阅读模式" SelectionChanged="OnModeChanged" Margin="0,10,0,0">
+                    <ComboBoxItem Content="普通单页" Tag="SinglePage"/>
+                    <ComboBoxItem Content="条漫模式" Tag="Webtoon"/>
+                    <ComboBoxItem Content="日漫模式 (从右向左)" Tag="Manga"/>
+                    <ComboBoxItem Content="国漫模式 (从左向右)" Tag="ChinaManga"/>
+                </ComboBox>
             </StackPanel>
         </Grid>
 

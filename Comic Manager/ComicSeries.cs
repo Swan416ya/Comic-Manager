@@ -58,5 +58,20 @@ namespace Comic_Manager
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
         public ObservableCollection<ComicChapter> Chapters { get; set; } = new ObservableCollection<ComicChapter>();
+
+        private ReadingMode _mode = ReadingMode.SinglePage;
+        public ReadingMode Mode
+        {
+            get => _mode;
+            set { _mode = value; OnPropertyChanged(nameof(Mode)); }
+        }
+    }
+
+    public enum ReadingMode
+    {
+        Webtoon,        // 条漫（上下滑动）
+        Manga,          // 日漫（从右至左，双页）
+        ChinaManga,     // 国漫（从左至右，双页）
+        SinglePage      // 单页（普通翻页）
     }
 }

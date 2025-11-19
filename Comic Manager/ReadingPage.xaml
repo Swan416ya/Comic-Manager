@@ -1,0 +1,77 @@
+<Page
+    x:Class="Comic_Manager.ReadingPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="Black">
+
+    <Grid>
+        <!-- === 模式 A: 条漫模式 (Webtoon) === -->
+        <!-- 使用 ScrollViewer 实现垂直滚动 -->
+        <ScrollViewer x:Name="WebtoonViewer" 
+                      Visibility="Collapsed" 
+                      HorizontalScrollBarVisibility="Disabled"
+                      VerticalScrollBarVisibility="Visible"
+                      ViewChanged="OnWebtoonViewChanged">
+            <ItemsControl x:Name="WebtoonList">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <!-- 条漫模式：Stretch="Uniform" 保证宽度撑满且不裁剪 -->
+                        <Image Source="{Binding}" Stretch="Uniform" Margin="0,0,0,0"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <!-- === 模式 B: 翻页模式 (Manga/China/Single) === -->
+        <FlipView x:Name="PagedFlipView" 
+                  Visibility="Collapsed"
+                  SelectionChanged="OnPageSelectionChanged">
+
+            <FlipView.ItemTemplate>
+                <DataTemplate>
+                    <!-- 这是一个水平排列的容器，并在屏幕居中 -->
+                    <!-- 如果 ImageRight 为空（Collapsed），StackPanel 就只会显示 ImageLeft -->
+                    <!-- ImageLeft 会自动居中，完美解决单页/双页的居中问题 -->
+                    <StackPanel Orientation="Horizontal" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center">
+
+                        <!-- 左边图 -->
+                        <Image Source="{Binding ImageLeft}" 
+                   Stretch="Uniform"
+                   Visibility="{Binding ImageLeftVis}"
+                   MaxHeight="{Binding ElementName=PagedFlipView, Path=ActualHeight}"
+                   Margin="0,0,0,0"/>
+
+                        <!-- 右边图 -->
+                        <Image Source="{Binding ImageRight}" 
+                   Stretch="Uniform" 
+                   Visibility="{Binding ImageRightVis}"
+                   MaxHeight="{Binding ElementName=PagedFlipView, Path=ActualHeight}"
+                   Margin="0,0,0,0"/>
+
+                    </StackPanel>
+                </DataTemplate>
+            </FlipView.ItemTemplate>
+        </FlipView>
+
+        <!-- === 右下角页码指示器 === -->
+        <Border Background="#99000000" 
+                CornerRadius="4" 
+                HorizontalAlignment="Right" 
+                VerticalAlignment="Bottom" 
+                Margin="0,0,20,20"
+                Padding="10,5"
+                IsHitTestVisible="False">
+            <!-- 穿透点击，不挡住翻页操作 -->
+            <TextBlock x:Name="PageIndicatorText" 
+                       Text="1" 
+                       Foreground="White" 
+                       FontSize="14" 
+                       FontWeight="SemiBold"/>
+        </Border>
+    </Grid>
+</Page>
